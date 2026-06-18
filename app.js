@@ -16,6 +16,10 @@ app.get("/customers", (req, res) => {
     res.send("Customers Page");
 });
 
+app.get("/customers/:id", (req, res) => {
+    res.send(`Customer ID: ${req.params.id}` )
+})
+
 app.listen(5000, () => {
     console.log("Server running on port 5000");
 });
