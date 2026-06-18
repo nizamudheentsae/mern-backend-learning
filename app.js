@@ -1,7 +1,12 @@
+const express = require("express");
 
+const app = express();
 
-const name = "Nizam";
-const job = "Developer";
+app.get("/", (req, res) => {
+    res.send("Hello Express!");
+});
 
-console.log("Name:", name);
-console.log("Job:", job);
+app.listen(5000, () => {
+    console.log("Server running on port 5000")
+});
+
