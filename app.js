@@ -2,26 +2,22 @@ const express = require("express");
 
 const app = express();
 
-
 app.get("/", (req, res) => {
-    res.send("Home Page");
+  res.send("Home Page");
 });
 
 app.get("/about", (req, res) => {
-    res.send("About Page");
+  res.send("About Page");
 });
-
 
 app.get("/customers", (req, res) => {
-    res.send("Customers Page");
+  res.send("Customers Page");
 });
 
-app.get("/customers/:id", (req, res) => {
-    res.send(`Customer ID: ${req.params.id}` )
-})
+app.get("/customers/:id/orders/:orderId", (req, res) => {
+  res.send(`Customer ID: ${req.params.id}, Order ID: ${req.params.orderId}`);
+});
 
 app.listen(5000, () => {
-    console.log("Server running on port 5000");
+  console.log("Server running on port 5000");
 });
-
-
