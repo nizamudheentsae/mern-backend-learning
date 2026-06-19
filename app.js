@@ -7,6 +7,13 @@ app.use((req, res, next) => {
     next();
 });
 
+function logger(req, res, next) {
+  console.log("Custom Middleware Running")
+  next();
+}
+
+app.use(logger)
+
 app.get("/", (req, res) => {
   res.send("Home Page");
 });
