@@ -18,6 +18,11 @@ app.get("/customers/:id/orders/:orderId", (req, res) => {
   res.send(`Customer ID: ${req.params.id}, Order ID: ${req.params.orderId}`);
 });
 
+app.get("/search", (req, res) => {
+  res.send(`Search: ${req.query.name}`)
+});
+
+
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });
