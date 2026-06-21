@@ -22,4 +22,15 @@ router.get("/:id", (req, res) => {
   res.json(customer);
 });
 
+router.post("/", (req, res) => {
+    const newCustomer = {
+        id: customers.length + 1,
+        name: req.body.name,
+        city: req.body.city
+    }
+    customers.push(newCustomer);
+
+    res.json(newCustomer)
+})
+
 module.exports = router

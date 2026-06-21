@@ -2,6 +2,8 @@ const express = require("express");
 
 const app = express();
 
+app.use(express.json());
+
 const customerRoutes = require("./routes/customerRoutes");
 
 app.use("/customers", customerRoutes);
