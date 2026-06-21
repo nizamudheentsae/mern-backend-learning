@@ -14,6 +14,16 @@ router.get("/", (req, res) => {
     res.json(customers);
 });
 
+router.get("/search", (req, res) => {
+    const city = req.query.city;
+
+    const result = customers.filter(
+        (c) => c.city.toLowerCase() === city.toLowerCase()
+
+    )
+    res.json(result);
+})
+
 router.get("/:id", (req, res) => {
   const customer = customers.find(
     (c) => c.id === parseInt(req.params.id)
