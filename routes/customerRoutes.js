@@ -15,7 +15,11 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-    res.send(`Customer ID: ${req.params.id}`);
+  const customer = customers.find(
+    (c) => c.id === parseInt(req.params.id)
+  );
+
+  res.json(customer);
 });
 
 module.exports = router
