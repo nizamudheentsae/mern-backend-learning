@@ -33,4 +33,21 @@ router.post("/", (req, res) => {
     res.json(newCustomer)
 })
 
+
+router.put("/:id", (req, res) => {
+    const customer = customers.find(
+        (c) => c.id === parseInt(req.params.id)
+    )
+
+    if(!customer) {
+        return res.status (404).json ({
+            message: "Customer not Found"
+        })
+    }
+    customer.name = req.body.name;
+    customer.city = req.body.city;
+
+    res.json(customer)
+})
+
 module.exports = router
