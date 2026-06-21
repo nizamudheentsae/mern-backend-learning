@@ -50,4 +50,28 @@ router.put("/:id", (req, res) => {
     res.json(customer)
 })
 
-module.exports = router
+router.delete("/:id", (req, res) => {
+
+  const customerIndex = customers.findIndex(
+    (c) => c.id === parseInt(req.params.id)
+  );
+
+  if (customerIndex === -1) {
+    return res.status(404).json({
+      message: "Customer not found"
+    });
+  }
+
+  const deletedCustomer = customers[customerIndex];
+
+  customers.splice(customerIndex, 1);
+
+  res.json({
+    message: "Customer deleted successfully",
+    customer: deletedCustomer
+  });
+
+});
+
+
+module.exports = router;
