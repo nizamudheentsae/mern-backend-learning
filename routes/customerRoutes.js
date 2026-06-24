@@ -24,23 +24,51 @@ router.get("/search", (req, res) => {
     res.json(result);
 })
 
+router.get("/search-name", (req, res) => {
+    const name = req.query.name;
+
+    const nameResult = customers.filter(
+        (c) => c.name.toLowerCase() === name.toLowerCase()
+
+
+    )
+
+    res.json(nameResult);
+
+})
 router.get("/:id", (req, res) => {
   const customer = customers.find(
     (c) => c.id === parseInt(req.params.id)
   );
 
-  res.json(customer);
+  if (!customer) {
+    return res.status(404).json({
+      message: "Customer not found"
+    })
+  }
+
+  res.sendStatus(200).json(customer);
 });
 
 router.post("/", (req, res) => {
-    const newCustomer = {
+    
+    if (!req.body.name || !req.body.city) {
+      return res.status(400).json({
+        message: "Name and city are required"
+      });
+    }
+  
+  const newCustomer = {
         id: customers.length + 1,
         name: req.body.name,
         city: req.body.city
     }
     customers.push(newCustomer);
 
-    res.json(newCustomer)
+    res.sendStatus(201).json({
+      message: "Customer created successfully",
+      customer: newCustomer
+    })
 })
 
 
