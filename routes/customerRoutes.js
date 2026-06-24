@@ -51,12 +51,26 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    
-    if (!req.body.name || !req.body.city) {
-      return res.status(400).json({
-        message: "Name and city are required"
-      });
+
+    const {name, city} = req.body;
+
+    if (!name) {
+      return res.status(400).json ({
+        message: "Name is required"
+      })
     }
+
+    if (!city) {
+      return res.status(400).json({
+        message: "City is required"
+      })
+    }
+    
+    // if (!req.body.name || !req.body.city) {
+    //   return res.status(400).json({
+    //     message: "Name and city are required"
+    //   });
+    // }
   
   const newCustomer = {
         id: customers.length + 1,
@@ -82,10 +96,28 @@ router.put("/:id", (req, res) => {
             message: "Customer not Found"
         })
     }
+
+    const {name, city} = req.body;
+
+    if (!name) {
+      return res.status(400).json ({
+        message: "Name is required"
+      })
+    }
+    
+    if (!city) {
+      return res.status(400).json ({
+        message: "City is required"
+      })
+    }
+
     customer.name = req.body.name;
     customer.city = req.body.city;
 
-    res.json(customer)
+    res.status(200).json({
+      message: "Customer updated successfully",
+      customer
+    })
 })
 
 router.delete("/:id", (req, res) => {
