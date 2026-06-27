@@ -3,6 +3,9 @@ const { client, dbName } = require("./db/connection");
 
 const app = express();
 
+let db;
+let customersCollection;
+
 app.use(express.json());
 
 const customerRoutes = require("./routes/customerRoutes");
@@ -15,7 +18,9 @@ client.connect()
 
     console.log("✅ Connected to MongoDB");
 
-    const db = client.db(dbName);
+    db = client.db(dbName);
+
+    customersCollection = db.collection("customers")
 
     console.log(db.databaseName);
 
