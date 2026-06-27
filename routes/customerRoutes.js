@@ -10,8 +10,12 @@ const customers = [
 ];
 
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+
+    const customers = await req.customersCollection.find().toArray();
+
     res.json(customers);
+
 });
 
 router.get("/search", (req, res) => {

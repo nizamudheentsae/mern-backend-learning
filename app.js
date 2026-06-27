@@ -10,7 +10,10 @@ app.use(express.json());
 
 const customerRoutes = require("./routes/customerRoutes");
 
-app.use("/customers", customerRoutes);
+app.use("/customers", (req, res, next) => {
+    req.customersCollection = customersCollection;
+    next();
+}, customerRoutes);
 
 // DB CONNECT
 client.connect()
