@@ -110,43 +110,23 @@ router.put("/:id", async (req, res) => {
 // DELETE OR REMOVE DAT / CUSTOMER
 
 router.delete("/:id", async (req, res) => {
-  const id = new ObjectId(req.params.id);
 
-  const customer = await req.customersCollection.findOne({
-    _id: id,
-  });
+    const deletedCustomer =
+        await Customer.findByIdAndDelete(req.params.id);
 
-  if (!customer) {
-    return res.status(404).json({
-      message: "Customer not found",
+    if (!deletedCustomer) {
+        return res.status(404).json({
+            message: "Customer not found"
+        });
+    }
+
+    res.json({
+        message: "Customer deleted successfully",
+        customer: deletedCustomer
     });
-  }
 
-  await req.customersCollection.deleteOne({
-    _id: id,
-  });
-
-  res.json({
-    message: "Csutomer Deleted Successfully",
-  });
-
-  // const customerIndex = customers.findIndex(
-  //   (c) => c.id === parseInt(req.params.id)
-  // );
-  // if (customerIndex === -1) {
-  //   return res.status(404).json({
-  //     message: "Customer not found"
-  //   });
-  // }
-
-  // const deletedCustomer = customers[customerIndex];
-
-  // customers.splice(customerIndex, 1);
-
-  // res.json({
-  //   message: "Customer deleted successfully",
-  //   customer: deletedCustomer
-  // });
 });
+
+
 
 module.exports = router;
