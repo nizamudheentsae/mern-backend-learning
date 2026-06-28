@@ -12,7 +12,7 @@ const customers = [
 ];
 
 router.get("/", async (req, res) => {
-  const customers = await req.customersCollection.find().toArray();
+  const customers = await Customer.find();
 
   res.json(customers);
 });
