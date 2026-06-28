@@ -8,4 +8,8 @@ const customerSchema = new mongoose.Schema({
     job: String
 });
 
-module.exports = customerSchema;
+const Customer = mongoose.model(
+    "Customer", customerSchema
+);
+
+module.exports = Customer;
