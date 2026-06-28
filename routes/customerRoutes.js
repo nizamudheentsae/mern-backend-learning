@@ -1,4 +1,4 @@
-
+const {ObjectId} =require("mongodb");
 const express = require("express");
 
 const router = express.Router();
@@ -54,7 +54,10 @@ router.get("/:id", (req, res) => {
   res.sendStatus(200).json(customer);
 });
 
-router.post("/", (req, res) => {
+
+// AD NEW DATA OR CUSTOMER
+
+router.post("/", async (req, res) => {
 
     const {name, city} = req.body;
 
@@ -76,24 +79,36 @@ router.post("/", (req, res) => {
     //   });
     // }
   
-  const newCustomer = {
-        id: customers.length + 1,
-        name: req.body.name,
-        city: req.body.city
-    }
-    customers.push(newCustomer);
-
-    res.sendStatus(201).json({
-      message: "Customer created successfully",
-      customer: newCustomer
-    })
-})
+  // const newCustomer = {
+  //       id: customers.length + 1,
+  //       name: req.body.name,
+  //       city: req.body.city
+  //   }
+  //   customers.push(newCustomer);
 
 
-router.put("/:id", (req, res) => {
-    const customer = customers.find(
-        (c) => c.id === parseInt(req.params.id)
-    )
+    const customer = {
+          name, city
+    };
+
+     const result = await req.customersCollection.insertOne(customer);
+
+    res.status(201).json({
+        message: "Customer created successfully",
+        insertedId: result.insertedId
+    });
+
+});
+
+
+// EDIT OR UPDATE DATA
+
+router.put("/:id", async (req, res) => {
+
+    const id = new ObjectId (req.params.id)
+    const customer = await req.customersCollection.findOne({
+          _id: id
+    });
 
     if(!customer) {
         return res.status (404).json ({
@@ -101,27 +116,36 @@ router.put("/:id", (req, res) => {
         })
     }
 
-    const {name, city} = req.body;
+    await req.customersCollection.updateOne(
+      {
+          _id: id
+      },
+      {
+        $set: {
+          name: req.body.name,
+          city: req.body.city
+        }
+      }
+    )
 
-    if (!name) {
-      return res.status(400).json ({
-        message: "Name is required"
-      })
-    }
+    // if (!name) {
+    //   return res.status(400).json ({
+    //     message: "Name is required"
+    //   })
+    // }
     
-    if (!city) {
-      return res.status(400).json ({
-        message: "City is required"
-      })
-    }
+    // if (!city) {
+    //   return res.status(400).json ({
+    //     message: "City is required"
+    //   })
+    // }
 
-    customer.name = req.body.name;
-    customer.city = req.body.city;
+    // customer.name = req.body.name;
+    // customer.city = req.body.city;
 
-    res.status(200).json({
-      message: "Customer updated successfully",
-      customer
-    })
+   res.json({
+    message: "Customer Updated Successfully"
+   })
 })
 
 router.delete("/:id", (req, res) => {
