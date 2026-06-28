@@ -1,15 +1,28 @@
-
 const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
-    name: String,
-    city: String,
-    age: Number,
-    job: String
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 50
+  },
+
+  city: {
+    type: String,
+    required: true
+  },
+
+  age: {
+    type: Number,
+    min: 1,
+    max: 120
+  },
+
+  job: {
+    type: String,
+    default: "Not Assigned"
+  }
 });
 
-const Customer = mongoose.model(
-    "Customer", customerSchema
-);
-
-module.exports = Customer;
+module.exports = mongoose.model("Customer", customerSchema);

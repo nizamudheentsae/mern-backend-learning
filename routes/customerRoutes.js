@@ -50,31 +50,27 @@ router.get("/:id", (req, res) => {
 // AD NEW DATA OR CUSTOMER
 
 router.post("/", async (req, res) => {
-  const { name, city } = req.body;
+  try {
+    const { name, city, age, job } = req.body;
 
-  if (!name) {
-    return res.status(400).json({
-      message: "Name is required",
+    const customer = {
+      name,
+      city,
+      age,
+      job
+    };
+
+    const newCustomer = await Customer.create(customer);
+
+    res.status(201).json({
+      message: "Customer created successfully",
+      customer: newCustomer,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message,
     });
   }
-
-  if (!city) {
-    return res.status(400).json({
-      message: "City is required",
-    });
-  }
-
-  const customer = {
-    name,
-    city,
-  };
-
-  const newCustomer = await Customer.create(customer);
-
-  res.status(201).json({
-    message: "Customer created successfully",
-    customer: newCustomer,
-  });
 });
 
 // EDIT OR UPDATE DATA
