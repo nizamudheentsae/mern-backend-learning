@@ -1,37 +1,25 @@
 const express = require("express");
-const { client, dbName } = require("./db/connection");
+const mongoose = require("mongoose");
+const customerRoutes = require("./routes/customerRoutes");
 
 const app = express();
 
-let db;
-let customersCollection;
-
+// Middleware
 app.use(express.json());
 
-const customerRoutes = require("./routes/customerRoutes");
+// Routes
+app.use("/customers", customerRoutes);
 
-app.use("/customers", (req, res, next) => {
-    req.customersCollection = customersCollection;
-    next();
-}, customerRoutes);
-
-// DB CONNECT
-client.connect()
-.then(() => {
-
-    console.log("✅ Connected to MongoDB");
-
-    db = client.db(dbName);
-
-    customersCollection = db.collection("customers")
-
-    console.log(db.databaseName);
+// Mongoose Connection
+mongoose
+  .connect("mongodb://127.0.0.1:27017/careerPathDB")
+  .then(() => {
+    console.log("✅ Connected to MongoDB with Mongoose");
 
     app.listen(5000, () => {
-        console.log("Server running on port 5000");
+      console.log("🚀 Server running on port 5000");
     });
-
-})
-.catch((err) => {
-    console.log(err);
-});
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Error:", err);
+  });
