@@ -80,46 +80,30 @@ router.post("/", async (req, res) => {
 // EDIT OR UPDATE DATA
 
 router.put("/:id", async (req, res) => {
-  const id = new ObjectId(req.params.id);
-  const customer = await req.customersCollection.findOne({
-    _id: id,
-  });
+  const { name, city, age, job } = req.body;
 
-  if (!customer) {
+  const updateData = {};
+
+  if (name) updateData.name = name;
+  if (city) updateData.city = city;
+  if (age) updateData.age = age;
+  if (job) updateData.job = job;
+
+  const updatedCustomer = await Customer.findByIdAndUpdate(
+    req.params.id,
+    updateData,
+    { new: true },
+  );
+
+  if (!updatedCustomer) {
     return res.status(404).json({
-      message: "Customer not Found",
+      message: "Customer not found",
     });
   }
 
-  await req.customersCollection.updateOne(
-    {
-      _id: id,
-    },
-    {
-      $set: {
-        name: req.body.name,
-        city: req.body.city,
-      },
-    },
-  );
-
-  // if (!name) {
-  //   return res.status(400).json ({
-  //     message: "Name is required"
-  //   })
-  // }
-
-  // if (!city) {
-  //   return res.status(400).json ({
-  //     message: "City is required"
-  //   })
-  // }
-
-  // customer.name = req.body.name;
-  // customer.city = req.body.city;
-
   res.json({
-    message: "Customer Updated Successfully",
+    message: "Customer updated successfully",
+    customer: updatedCustomer,
   });
 });
 
